@@ -44,24 +44,14 @@ export default function AdminDualLoginToggle() {
           onPress={() => handleDevLogin('admin')}
           disabled={isLoading}
           style={[styles.loginButton, { backgroundColor: Colors.primary }]}
-        >
-          <View style={styles.buttonContent}>
-            <Icons.Shield size={16} color={Colors.black} />
-            <Text style={styles.buttonText}>Admin Login</Text>
-          </View>
-        </Button>
+        />
 
         <Button
           title="Login as Mechanic"
           onPress={() => handleDevLogin('mechanic')}
           disabled={isLoading}
           style={[styles.loginButton, { backgroundColor: Colors.mechanic }]}
-        >
-          <View style={styles.buttonContent}>
-            <Icons.Wrench size={16} color={Colors.white} />
-            <Text style={[styles.buttonText, { color: Colors.white }]}>Mechanic Login</Text>
-          </View>
-        </Button>
+        />
       </View>
 
       <View style={styles.credentials}>

@@ -16,7 +16,7 @@ export const PRODUCTION_CONFIG = {
 // Environment configuration with safe defaults
 export const ENV_CONFIG = {
   isProduction: PRODUCTION_CONFIG.isProduction ?? false,
-  showQuickAccess: false, // Disabled in production
+  showQuickAccess: true, // Enabled for development testing
   enableDemoMode: false, // Disabled in production
   enableToolsModule: PRODUCTION_CONFIG.enableToolsModule ?? true,
   requireSignature: PRODUCTION_CONFIG.requireSignature ?? true,

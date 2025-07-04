@@ -132,10 +132,9 @@ export default function MaintenanceSuggestions({
   };
 
   const getIcon = (iconName: keyof typeof Icons) => {
-    const IconComponent = Icons[iconName];
-    if (IconComponent && typeof IconComponent === 'function') {
-      const Icon = IconComponent as React.ComponentType<{ size: number; color: string }>;
-      return <Icon size={20} color={Colors.primary} />;
+    const IconComponent = Icons[iconName] as React.ComponentType<{ size: number; color: string }>;
+    if (IconComponent) {
+      return <IconComponent size={20} color={Colors.primary} />;
     }
     return <Icons.AlertCircle size={20} color={Colors.primary} />;
   };

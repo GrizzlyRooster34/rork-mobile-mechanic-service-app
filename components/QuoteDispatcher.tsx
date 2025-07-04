@@ -5,6 +5,7 @@ import ScooterServiceSelector from './ScooterServiceSelector';
 import VINCheckerMotorcycle from './VINCheckerMotorcycle';
 import { VinScanner } from './VinScanner';
 import { Colors } from '@/constants/colors';
+import { VinData } from '@/types/service';
 import * as Icons from 'lucide-react-native';
 
 type ServiceType = 'auto' | 'motorcycle' | 'scooter';
@@ -47,7 +48,7 @@ export default function QuoteDispatcher({ onServiceSelected, onVehicleDetected }
             
             {showVinScanner ? (
               <VinScanner
-                onVinScanned={(vinData: any) => handleVinScanned(vinData)}
+                onVinScanned={(vinData: VinData) => handleVinScanned(vinData)}
                 onClose={() => setShowVinScanner(false)}
               />
             ) : (

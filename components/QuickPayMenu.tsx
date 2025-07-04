@@ -119,17 +119,7 @@ export default function QuickPayMenu({ total, customerName, jobId }: QuickPayMen
                   opacity: isCopied ? 0.8 : 1,
                 }
               ]}
-            >
-              <View style={styles.methodContent}>
-                <IconComponent size={16} color={Colors.white} />
-                <Text style={styles.methodText}>
-                  {isCopied ? 'Copied!' : method}
-                </Text>
-                {isCopied && (
-                  <Icons.Check size={16} color={Colors.white} />
-                )}
-              </View>
-            </Button>
+            />
           );
         })}
       </View>

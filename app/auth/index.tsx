@@ -6,6 +6,7 @@ import { Button } from '@/components/Button';
 import { useAuthStore } from '@/stores/auth-store';
 import { ENV_CONFIG, validateEmail, validatePassword } from '@/utils/firebase-config';
 import * as Icons from 'lucide-react-native';
+import AdminDualLoginToggle from '@/components/AdminDualLoginToggle';
 
 export default function AuthScreen() {
   const { login, signup, isLoading, isAuthenticated, user } = useAuthStore();
@@ -266,41 +267,44 @@ export default function AuthScreen() {
 
       {/* Development Quick Access - Only show in development */}
       {ENV_CONFIG?.showQuickAccess && (
-        <View style={styles.quickAccessSection}>
-          <Text style={styles.quickAccessTitle}>Quick Access (Development Only)</Text>
-          <View style={styles.quickAccessButtons}>
-            <TouchableOpacity
-              style={styles.quickAccessButton}
-              onPress={() => {
-                setEmail('customer@example.com');
-                setPassword('password');
-                setIsLoginMode(true);
-              }}
-            >
-              <Text style={styles.quickAccessText}>Customer Login</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.quickAccessButton}
-              onPress={() => {
-                setEmail('matthew.heinen.2014@gmail.com');
-                setPassword('RoosTer669072!@');
-                setIsLoginMode(true);
-              }}
-            >
-              <Text style={styles.quickAccessText}>Admin (Cody)</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.quickAccessButton}
-              onPress={() => {
-                setEmail('cody@heinicus.com');
-                setPassword('RoosTer669072!@');
-                setIsLoginMode(true);
-              }}
-            >
-              <Text style={styles.quickAccessText}>Mechanic (Cody)</Text>
-            </TouchableOpacity>
+        <>
+          <AdminDualLoginToggle />
+          <View style={styles.quickAccessSection}>
+            <Text style={styles.quickAccessTitle}>Manual Login (Development Only)</Text>
+            <View style={styles.quickAccessButtons}>
+              <TouchableOpacity
+                style={styles.quickAccessButton}
+                onPress={() => {
+                  setEmail('customer@example.com');
+                  setPassword('password');
+                  setIsLoginMode(true);
+                }}
+              >
+                <Text style={styles.quickAccessText}>Customer Login</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.quickAccessButton}
+                onPress={() => {
+                  setEmail('matthew.heinen.2014@gmail.com');
+                  setPassword('RoosTer669072!@');
+                  setIsLoginMode(true);
+                }}
+              >
+                <Text style={styles.quickAccessText}>Admin (Cody)</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.quickAccessButton}
+                onPress={() => {
+                  setEmail('cody@heinicus.com');
+                  setPassword('RoosTer669072!@');
+                  setIsLoginMode(true);
+                }}
+              >
+                <Text style={styles.quickAccessText}>Mechanic (Cody)</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </>
       )}
 
       {/* Production Info */}

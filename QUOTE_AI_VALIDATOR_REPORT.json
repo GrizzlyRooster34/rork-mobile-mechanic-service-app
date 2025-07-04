@@ -1,0 +1,371 @@
+{
+  "timestamp": "2025-07-04T10:15:09.260Z",
+  "summary": {
+    "passed": 72,
+    "failed": 0,
+    "successRate": 100,
+    "duration": 22
+  },
+  "testResults": [
+    {
+      "timestamp": "2025-07-04T10:15:09.239Z",
+      "message": "Quote generated for 2018 Toyota Camry (car)",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.241Z",
+      "message": "Quote structure validated for Toyota Camry",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.241Z",
+      "message": "Quote generated for 2015 BMW X5 (car)",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.244Z",
+      "message": "Quote structure validated for BMW X5",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.244Z",
+      "message": "Luxury brand pricing markup applied correctly for BMW",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.244Z",
+      "message": "Quote generated for 2020 Honda CBR600RR (motorcycle)",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.245Z",
+      "message": "Quote structure validated for Honda CBR600RR",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.245Z",
+      "message": "Quote generated for 2019 Yamaha Vino 125 (scooter)",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.245Z",
+      "message": "Quote structure validated for Yamaha Vino 125",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.247Z",
+      "message": "oil_change quote generated for car: $97",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.247Z",
+      "message": "Price within expected range for oil_change on car",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.248Z",
+      "message": "brake_service quote generated for car: $304",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.248Z",
+      "message": "Price within expected range for brake_service on car",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.248Z",
+      "message": "engine_diagnostic quote generated for car: $264",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.248Z",
+      "message": "Price within expected range for engine_diagnostic on car",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.248Z",
+      "message": "oil_change quote generated for car: $102",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.248Z",
+      "message": "Price within expected range for oil_change on car",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.249Z",
+      "message": "brake_service quote generated for car: $321",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.249Z",
+      "message": "Price within expected range for brake_service on car",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.249Z",
+      "message": "engine_diagnostic quote generated for car: $263",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.249Z",
+      "message": "Price within expected range for engine_diagnostic on car",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.249Z",
+      "message": "oil_change quote generated for motorcycle: $97",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.249Z",
+      "message": "Price within expected range for oil_change on motorcycle",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.250Z",
+      "message": "brake_service quote generated for motorcycle: $300",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.250Z",
+      "message": "Price within expected range for brake_service on motorcycle",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.250Z",
+      "message": "engine_diagnostic quote generated for motorcycle: $263",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.250Z",
+      "message": "Price within expected range for engine_diagnostic on motorcycle",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.250Z",
+      "message": "oil_change quote generated for scooter: $94",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.250Z",
+      "message": "Price within expected range for oil_change on scooter",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.250Z",
+      "message": "brake_service quote generated for scooter: $294",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.251Z",
+      "message": "Price within expected range for brake_service on scooter",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.251Z",
+      "message": "engine_diagnostic quote generated for scooter: $250",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.251Z",
+      "message": "Price within expected range for engine_diagnostic on scooter",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.251Z",
+      "message": "low urgency quote: $130",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.252Z",
+      "message": "Low urgency discount applied correctly",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.252Z",
+      "message": "medium urgency quote: $135",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.252Z",
+      "message": "high urgency quote: $141",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.252Z",
+      "message": "emergency urgency quote: $150",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.252Z",
+      "message": "Emergency urgency multiplier applied correctly",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.253Z",
+      "message": "AI-assisted quote generated (confidence: 0.9)",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.253Z",
+      "message": "High confidence AI diagnosis reduced labor time appropriately",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.253Z",
+      "message": "Quote cost aligns with AI estimated cost range",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.253Z",
+      "message": "AI-assisted quote generated (confidence: 0.7)",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.253Z",
+      "message": "Quote cost aligns with AI estimated cost range",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.254Z",
+      "message": "AI-assisted quote generated (confidence: 0.5)",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.254Z",
+      "message": "Low confidence AI diagnosis increased labor time appropriately",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.254Z",
+      "message": "Quote cost aligns with AI estimated cost range",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.255Z",
+      "message": "Quote 1751624109254 approved successfully",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.255Z",
+      "message": "Quote 1751624109254 rejected with notes",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.255Z",
+      "message": "Quote 1751624109254 expired correctly",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.255Z",
+      "message": "Quote status transition validated",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.255Z",
+      "message": "Quote 1751624109254 approved successfully",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.255Z",
+      "message": "Quote 1751624109254 rejected with notes",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.255Z",
+      "message": "Quote 1751624109254 expired correctly",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.255Z",
+      "message": "Quote status transition validated",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.255Z",
+      "message": "Quote 1751624109255 approved successfully",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.255Z",
+      "message": "Quote 1751624109255 rejected with notes",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.255Z",
+      "message": "Quote 1751624109255 expired correctly",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.255Z",
+      "message": "Quote status transition validated",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.256Z",
+      "message": "Part estimate retrieved for oil filter: $12.99",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.256Z",
+      "message": "Part estimate structure validated for oil filter",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.256Z",
+      "message": "Part estimate retrieved for brake pads: $45.99",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.256Z",
+      "message": "Part estimate structure validated for brake pads",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.256Z",
+      "message": "Part estimate retrieved for battery: $129.99",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.257Z",
+      "message": "Part estimate structure validated for battery",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.257Z",
+      "message": "Part estimate retrieved for spark plugs: $32.99",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.257Z",
+      "message": "Part estimate structure validated for spark plugs",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.257Z",
+      "message": "Part estimate retrieved for air filter: $19.99",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.257Z",
+      "message": "Part estimate structure validated for air filter",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.258Z",
+      "message": "Standard Oil Change pricing accurate: $116 (expected: $75-$150)",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.258Z",
+      "message": "Emergency Brake Service pricing accurate: $372 (expected: $300-$800)",
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T10:15:09.258Z",
+      "message": "High-Mileage Diagnostic pricing accurate: $299 (expected: $150-$500)",
+      "success": true
+    }
+  ]
+}

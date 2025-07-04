@@ -1,0 +1,588 @@
+// Heinicus Mobile Mechanic Service Database Schema
+// Comprehensive data model for mobile mechanic service platform
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ===== AUTHENTICATION & USERS =====
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  password    String   // Hashed password
+  role        UserRole @default(CUSTOMER)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Profile relationships
+  customerProfile CustomerProfile?
+  mechanicProfile MechanicProfile?
+  adminProfile    AdminProfile?
+
+  // Activity relationships
+  serviceRequests ServiceRequest[]
+  assignedJobs    Job[]           @relation("MechanicJobs")
+  chatMessages    ChatMessage[]
+  maintenanceReminders MaintenanceReminder[]
+  auditLogs       AuditLog[]
+
+  @@map("users")
+}
+
+enum UserRole {
+  CUSTOMER
+  MECHANIC
+  ADMIN
+}
+
+model CustomerProfile {
+  id          String @id @default(cuid())
+  userId      String @unique
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  firstName   String
+  lastName    String
+  phone       String?
+  address     String?
+  city        String?
+  state       String?
+  zipCode     String?
+  
+  // Preferences
+  preferredContactMethod String? // email, phone, app
+  notificationsEnabled   Boolean @default(true)
+  
+  // Relationships
+  vehicles    Vehicle[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("customer_profiles")
+}
+
+model MechanicProfile {
+  id          String @id @default(cuid())
+  userId      String @unique
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  firstName   String
+  lastName    String
+  phone       String
+  
+  // Professional info
+  licenseNumber       String?
+  certifications      Json? // Array of certification names
+  specialties         Json? // Array of specialties
+  experienceYears     Int?
+  hourlyRate          Float?
+  
+  // Location & availability
+  serviceRadius       Float    @default(25.0) // Miles
+  currentLatitude     Float?
+  currentLongitude    Float?
+  isAvailable         Boolean  @default(false)
+  workingHours        Json?    // Store schedule as JSON
+  
+  // Ratings & performance
+  averageRating       Float?   @default(0.0)
+  totalJobs           Int      @default(0)
+  completionRate      Float?   @default(0.0)
+  
+  // Tools & equipment
+  availableTools      Json? // Array of tool names
+  vehicleYear         String?
+  vehicleMake         String?
+  vehicleModel        String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("mechanic_profiles")
+}
+
+model AdminProfile {
+  id          String @id @default(cuid())
+  userId      String @unique
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  firstName   String
+  lastName    String
+  permissions Json? // Array of permission strings
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("admin_profiles")
+}
+
+// ===== VEHICLES =====
+
+model Vehicle {
+  id              String @id @default(cuid())
+  customerId      String
+  customer        CustomerProfile @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  
+  // Vehicle identification
+  vin             String?
+  licensePlate    String?
+  
+  // Vehicle details
+  year            String
+  make            String
+  model           String
+  vehicleType     VehicleType
+  color           String?
+  mileage         Int?
+  engineSize      String?
+  fuelType        String?
+  transmission    String?
+  
+  // Additional info
+  nickname        String? // Customer's name for the vehicle
+  notes           String?
+  
+  // Relationships
+  serviceRequests ServiceRequest[]
+  maintenanceRecords MaintenanceRecord[]
+  maintenanceReminders MaintenanceReminder[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("vehicles")
+}
+
+enum VehicleType {
+  CAR
+  MOTORCYCLE
+  SCOOTER
+  TRUCK
+  SUV
+  VAN
+}
+
+// ===== SERVICE REQUESTS & JOBS =====
+
+model ServiceRequest {
+  id              String @id @default(cuid())
+  customerId      String
+  customer        User   @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  vehicleId       String
+  vehicle         Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  
+  // Service details
+  serviceType     String
+  urgency         UrgencyLevel @default(LOW)
+  description     String
+  customerNotes   String?
+  
+  // Location
+  serviceLocation String
+  latitude        Float?
+  longitude       Float?
+  
+  // Status & timeline
+  status          ServiceRequestStatus @default(PENDING)
+  requestedDate   DateTime?
+  scheduledDate   DateTime?
+  
+  // AI diagnosis
+  aiDiagnosis     Json? // Store AI diagnosis results
+  diagnosisConfidence Float?
+  
+  // Relationships
+  quotes          Quote[]
+  jobs            Job[]
+  photos          Photo[]
+  chatMessages    ChatMessage[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("service_requests")
+}
+
+enum UrgencyLevel {
+  LOW
+  MEDIUM
+  HIGH
+  EMERGENCY
+}
+
+enum ServiceRequestStatus {
+  PENDING
+  QUOTED
+  QUOTE_APPROVED
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model Quote {
+  id                String @id @default(cuid())
+  serviceRequestId  String
+  serviceRequest    ServiceRequest @relation(fields: [serviceRequestId], references: [id], onDelete: Cascade)
+  
+  // Pricing breakdown
+  laborCost         Float
+  partsCost         Float
+  travelCost        Float
+  totalCost         Float
+  
+  // Quote details
+  estimatedDuration String? // e.g., "2-3 hours"
+  partsNeeded       Json?   // Array of parts with details
+  description       String?
+  validUntil        DateTime?
+  
+  // Status
+  status            QuoteStatus @default(PENDING)
+  
+  // AI-generated fields
+  aiGenerated       Boolean @default(false)
+  confidenceScore   Float?
+  
+  // Approval
+  approvedAt        DateTime?
+  rejectedAt        DateTime?
+  rejectionReason   String?
+  
+  // Payment
+  payments          Payment[]
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("quotes")
+}
+
+enum QuoteStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  EXPIRED
+  PAID
+}
+
+model Job {
+  id                String @id @default(cuid())
+  serviceRequestId  String
+  serviceRequest    ServiceRequest @relation(fields: [serviceRequestId], references: [id], onDelete: Cascade)
+  mechanicId        String
+  mechanic          User @relation("MechanicJobs", fields: [mechanicId], references: [id])
+  quoteId           String?
+  
+  // Job status
+  status            JobStatus @default(ASSIGNED)
+  priority          Int @default(1)
+  
+  // Timing
+  startedAt         DateTime?
+  completedAt       DateTime?
+  estimatedDuration String?
+  actualDuration    String?
+  
+  // Work details
+  workPerformed     String?
+  partsUsed         Json? // Array of parts used
+  laborHours        Float?
+  
+  // Quality & completion
+  qualityRating     Int? // 1-5 stars
+  customerSatisfaction Int? // 1-5 stars
+  completionNotes   String?
+  warrantyInfo      String?
+  
+  // Relationships
+  timeLogs          TimeLog[]
+  photos            Photo[]
+  payments          Payment[]
+  maintenanceRecord MaintenanceRecord?
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("jobs")
+}
+
+enum JobStatus {
+  ASSIGNED
+  EN_ROUTE
+  ARRIVED
+  IN_PROGRESS
+  AWAITING_PARTS
+  AWAITING_APPROVAL
+  COMPLETED
+  CANCELLED
+}
+
+model TimeLog {
+  id          String @id @default(cuid())
+  jobId       String
+  job         Job @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  mechanicId  String
+  
+  // Time tracking
+  startTime   DateTime
+  endTime     DateTime?
+  duration    Int? // Minutes
+  activity    String
+  description String?
+  
+  // Location tracking
+  latitude    Float?
+  longitude   Float?
+  
+  createdAt   DateTime @default(now())
+
+  @@map("time_logs")
+}
+
+// ===== PAYMENTS =====
+
+model Payment {
+  id              String @id @default(cuid())
+  jobId           String?
+  job             Job? @relation(fields: [jobId], references: [id])
+  quoteId         String?
+  quote           Quote? @relation(fields: [quoteId], references: [id])
+  
+  // Payment details
+  amount          Float
+  paymentType     PaymentType
+  paymentMethod   String // "card", "apple_pay", "google_pay", etc.
+  status          PaymentStatus @default(PENDING)
+  
+  // External payment info
+  stripePaymentId String?
+  transactionId   String?
+  
+  // Metadata
+  description     String?
+  processedAt     DateTime?
+  failureReason   String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("payments")
+}
+
+enum PaymentType {
+  DEPOSIT
+  COMPLETION
+  PARTS
+  FULL
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+// ===== MAINTENANCE & HISTORY =====
+
+model MaintenanceRecord {
+  id              String @id @default(cuid())
+  vehicleId       String
+  vehicle         Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  jobId           String? @unique
+  job             Job? @relation(fields: [jobId], references: [id])
+  
+  // Service details
+  serviceType     String
+  description     String
+  mileageAtService Int?
+  
+  // Parts & materials
+  partsReplaced   Json? // Array of parts
+  fluidsChanged   Json? // Array of fluids
+  laborTime       Float?
+  
+  // Warranty
+  warrantyMiles   Int?
+  warrantyMonths  Int?
+  warrantyExpires DateTime?
+  
+  // Next service
+  nextServiceDue  DateTime?
+  nextServiceMiles Int?
+  
+  // Cost
+  totalCost       Float?
+  
+  serviceDate     DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("maintenance_records")
+}
+
+model MaintenanceReminder {
+  id              String @id @default(cuid())
+  vehicleId       String
+  vehicle         Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Reminder details
+  reminderType    String // "oil_change", "tire_rotation", etc.
+  title           String
+  description     String?
+  
+  // Timing
+  dueDate         DateTime?
+  dueMileage      Int?
+  currentMileage  Int?
+  
+  // Status
+  isActive        Boolean @default(true)
+  isCompleted     Boolean @default(false)
+  completedAt     DateTime?
+  
+  // Notifications
+  lastNotified    DateTime?
+  notificationFrequency String? // "weekly", "monthly", etc.
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("maintenance_reminders")
+}
+
+// ===== COMMUNICATION =====
+
+model ChatMessage {
+  id              String @id @default(cuid())
+  serviceRequestId String
+  serviceRequest  ServiceRequest @relation(fields: [serviceRequestId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  message         String
+  messageType     MessageType @default(TEXT)
+  
+  // Metadata
+  isRead          Boolean @default(false)
+  readAt          DateTime?
+  
+  // File attachments
+  attachmentUrl   String?
+  attachmentType  String?
+  
+  createdAt       DateTime @default(now())
+
+  @@map("chat_messages")
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  FILE
+  SYSTEM
+}
+
+// ===== PHOTOS & FILES =====
+
+model Photo {
+  id              String @id @default(cuid())
+  serviceRequestId String?
+  serviceRequest  ServiceRequest? @relation(fields: [serviceRequestId], references: [id], onDelete: Cascade)
+  jobId           String?
+  job             Job? @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  
+  // File details
+  filename        String
+  url             String
+  fileSize        Int?
+  mimeType        String?
+  
+  // Photo metadata
+  photoType       PhotoType
+  description     String?
+  
+  // Location & time
+  latitude        Float?
+  longitude       Float?
+  takenAt         DateTime @default(now())
+  
+  createdAt       DateTime @default(now())
+
+  @@map("photos")
+}
+
+enum PhotoType {
+  BEFORE
+  DURING
+  AFTER
+  PARTS
+  DAMAGE
+  DIAGNOSTIC
+  OTHER
+}
+
+// ===== SYSTEM CONFIGURATION =====
+
+model Configuration {
+  id              String @id @default(cuid())
+  key             String @unique
+  value           Json
+  description     String?
+  category        String? // "pricing", "features", "system", etc.
+  
+  // Versioning
+  version         Int @default(1)
+  isActive        Boolean @default(true)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("configurations")
+}
+
+model AuditLog {
+  id              String @id @default(cuid())
+  userId          String?
+  user            User? @relation(fields: [userId], references: [id])
+  
+  // Action details
+  action          String // "create", "update", "delete", etc.
+  entityType      String // "user", "job", "payment", etc.
+  entityId        String
+  
+  // Changes
+  oldValues       Json?
+  newValues       Json?
+  
+  // Context
+  ipAddress       String?
+  userAgent       String?
+  
+  createdAt       DateTime @default(now())
+
+  @@map("audit_logs")
+}
+
+// ===== INDEXES FOR PERFORMANCE =====
+
+// User email lookup
+// Vehicle VIN lookup
+// Service requests by customer and status
+// Jobs by mechanic and status
+// Photos by service request and job
+// Time logs by job and date
+// Maintenance records by vehicle
+// Chat messages by service request and date

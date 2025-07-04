@@ -5,11 +5,21 @@
   "scripts": {
     "start": "bunx rork start -p c7x1s84u1fl4wwv0l8yb5 --tunnel",
     "start-web": "bunx rork start -p c7x1s84u1fl4wwv0l8yb5 --web --tunnel",
-    "start-web-dev": "DEBUG=expo* bunx rork start -p c7x1s84u1fl4wwv0l8yb5 --web --tunnel"
+    "start-web-dev": "DEBUG=expo* bunx rork start -p c7x1s84u1fl4wwv0l8yb5 --web --tunnel",
+    "bump-version": "npx tsx scripts/bump-version.ts",
+    "build:preview": "npm run bump-version && eas build --platform android --profile preview",
+    "build:production": "npm run bump-version && eas build --platform android --profile production",
+    "db:generate": "npx prisma generate",
+    "db:migrate": "npx prisma migrate dev",
+    "db:push": "npx prisma db push",
+    "db:studio": "npx prisma studio",
+    "db:setup": "npx tsx scripts/setup-database.ts",
+    "db:reset": "npx prisma migrate reset --force && npm run db:setup"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
     "@hono/trpc-server": "^0.3.4",
+    "@prisma/client": "^6.11.1",
     "@react-native-async-storage/async-storage": "2.1.2",
     "@react-native-community/netinfo": "11.4.1",
     "@react-navigation/native": "^7.1.6",
@@ -17,6 +27,8 @@
     "@trpc/client": "^11.4.1",
     "@trpc/react-query": "^11.4.1",
     "@trpc/server": "^11.4.1",
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "^3.0.2",
     "expo": "^53.0.4",
     "expo-blur": "~14.1.4",
     "expo-camera": "~16.1.10",
@@ -52,7 +64,10 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@expo/ngrok": "^4.1.0",
+    "@types/node": "^24.0.10",
     "@types/react": "~19.0.10",
+    "prisma": "^6.11.1",
+    "ts-node": "^10.9.2",
     "typescript": "~5.8.3"
   },
   "private": true

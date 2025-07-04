@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Mobile Mechanic Service App",
-    "slug": "mobile-mechanic-service-app",
-    "version": "1.0.0",
+    "slug": "rork-mobile-mechanic-app-build",
+    "version": "1.0.3",
     "owner": "heinicus1",
     "projectId": "ffc17970-a189-49d4-b3a3-1b164e8c591e",
     "orientation": "portrait",
@@ -24,7 +24,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "app.rork.mobilemechanicservice"
+      "package": "app.rork.mobilemechanicservice",
+      "versionCode": 3
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
@@ -45,7 +46,7 @@
         "origin": "https://rork.com/"
       },
       "eas": {
-        "projectId": "37475a01-fb75-4ea0-9953-90276c89a395"
+        "projectId": "ffc17970-a189-49d4-b3a3-1b164e8c591e"
       }
     }
   }

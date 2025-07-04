@@ -1,7 +1,8 @@
-export function createContext({ req, res }: { req: any; res: any }) {
+import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
+
+export function createContext(opts: FetchCreateContextFnOptions) {
   return {
-    req,
-    res,
+    req: opts.req,
     environment: process.env.NODE_ENV || 'development',
     isProduction: process.env.NODE_ENV === 'production',
   };

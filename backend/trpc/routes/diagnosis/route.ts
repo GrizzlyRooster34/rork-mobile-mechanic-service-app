@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { publicProcedure } from '../../create-context';
+import { publicProcedure, router } from '../../trpc';
 import { DiagnosticResult } from '@/types/service';
 
 const vehicleInfoSchema = z.object({
@@ -240,3 +240,8 @@ export const diagnoseProcedure = publicProcedure
       throw new Error('Failed to generate AI diagnosis. Please try again or contact support.');
     }
   });
+
+// Export the diagnosis router
+export const diagnosisRouter = router({
+  diagnose: diagnoseProcedure,
+});

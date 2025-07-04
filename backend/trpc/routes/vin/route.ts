@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { publicProcedure } from '../../create-context';
+import { publicProcedure, router } from '../../trpc';
 import { decodePlateToVIN, validatePlateFormat, getSupportedStates } from '@/utils/vin/fromPlate';
 
 // VIN decoding from license plate
@@ -74,3 +74,10 @@ function getStateName(stateCode: string): string {
   
   return stateNames[stateCode.toUpperCase()] || stateCode;
 }
+
+// Export the VIN router
+export const vinRouter = router({
+  decodeFromPlate: decodeFromPlateProcedure,
+  getSupportedStates: getSupportedStatesProcedure,
+  validatePlate: validatePlateProcedure,
+});

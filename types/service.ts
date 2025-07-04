@@ -201,7 +201,17 @@ export interface PartEstimate {
 
 export interface DiagnosticResult {
   id: string;
-  confidence: number;
+  vehicleInfo: {
+    make: string;
+    model: string;
+    year: number;
+    mileage?: number;
+    engine?: string;
+    vin?: string;
+  };
+  symptoms: string;
+  additionalContext?: string;
+  confidence: 'low' | 'medium' | 'high';
   likelyCauses: string[];
   diagnosticSteps: string[];
   urgencyLevel: 'low' | 'medium' | 'high' | 'emergency';
@@ -210,6 +220,7 @@ export interface DiagnosticResult {
     max: number;
   };
   matchedServices: string[];
+  recommendedServiceTypes?: string[];
   createdAt: Date;
 }
 

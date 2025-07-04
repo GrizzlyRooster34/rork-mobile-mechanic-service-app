@@ -403,3 +403,5 @@ const styles = StyleSheet.create({
     color: Colors.success,
   },
 });
+
+export default WorkTimer;

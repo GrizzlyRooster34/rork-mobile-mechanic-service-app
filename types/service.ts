@@ -84,6 +84,7 @@ export type QuoteStatus =
   | 'pending'
   | 'accepted'
   | 'rejected'
+  | 'declined'
   | 'expired'
   | 'deposit_paid'
   | 'paid';
@@ -139,6 +140,7 @@ export interface ServiceRequest {
   cancelledBy?: string;
   cancellationReason?: string;
   mechanicId?: string;
+  assignedMechanicId?: string;
   claimedAt?: Date;
   scheduledAt?: Date;
   startedAt?: Date;
@@ -164,6 +166,7 @@ export interface ServiceRequest {
 export interface Quote {
   id: string;
   serviceRequestId: string;
+  description: string;
   laborCost: number;
   partsCost: number;
   travelCost: number;
@@ -210,6 +213,7 @@ export interface DiagnosticResult {
     max: number;
   };
   matchedServices: string[];
+  recommendedServiceTypes: ServiceType[];
   createdAt: Date;
 }
 
@@ -320,4 +324,32 @@ export interface PaymentMethod {
     expYear: number;
   };
   isDefault: boolean;
+}
+
+export interface ChatMessage {
+  id: string;
+  text: string;
+  senderId: string;
+  senderName: string;
+  senderType: 'customer' | 'mechanic' | 'admin' | 'system';
+  timestamp: Date;
+  jobId?: string;
+  attachments?: string[];
+  readBy?: string[];
+  metadata?: Record<string, any>;
+}
+
+export interface MaintenanceInterval {
+  id: string;
+  serviceType: ServiceType;
+  intervalType: 'mileage' | 'time' | 'both';
+  mileageInterval?: number;
+  timeInterval?: number; // in months
+  description: string;
+  vehicleTypes: VehicleType[];
+  priority: 'low' | 'medium' | 'high';
+  estimatedCost?: {
+    min: number;
+    max: number;
+  };
 }

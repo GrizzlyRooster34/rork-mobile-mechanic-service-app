@@ -1,7 +1,7 @@
 // Firebase service layer for production use
 // This provides the interface for Firebase operations
 
-import { firebaseConfig, COLLECTIONS } from '@/utils/firebase-config';
+import { FIREBASE_CONFIG, COLLECTIONS } from '@/utils/firebase-config';
 import { User } from '@/types/auth';
 import { ServiceRequest, Quote, Vehicle, ChatMessage } from '@/types/service';
 

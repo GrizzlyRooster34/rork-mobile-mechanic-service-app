@@ -33,7 +33,6 @@ export function getDevUser(email: string): User | null {
       role: 'admin',
       phone: '(555) 987-6543',
       createdAt: new Date(),
-      isActive: true,
     };
   }
   
@@ -46,7 +45,6 @@ export function getDevUser(email: string): User | null {
       role: 'mechanic',
       phone: '(555) 987-6543',
       createdAt: new Date(),
-      isActive: true,
     };
   }
   
@@ -59,7 +57,6 @@ export function getDevUser(email: string): User | null {
       role: 'customer',
       phone: '(555) 123-4567',
       createdAt: new Date(),
-      isActive: true,
     };
   }
   

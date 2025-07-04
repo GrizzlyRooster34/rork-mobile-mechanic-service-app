@@ -6,7 +6,7 @@ export interface User {
   role: 'customer' | 'mechanic' | 'admin';
   phone?: string;
   createdAt: Date;
-  isActive: boolean; // Add this field to fix TypeScript errors
+  isActive?: boolean; // Make optional to avoid backend compatibility issues
 }
 
 export interface AuthState {

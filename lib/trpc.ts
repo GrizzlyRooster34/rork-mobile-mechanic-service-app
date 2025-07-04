@@ -7,6 +7,13 @@ import { Platform } from "react-native";
 export const trpc = createTRPCReact<AppRouter>();
 
 const getBaseUrl = () => {
+  // Check for Rork environment first
+  if (typeof window !== 'undefined' && window.location) {
+    const currentUrl = window.location.origin;
+    console.log('Using current origin for API:', currentUrl);
+    return currentUrl;
+  }
+
   // Production API URL
   if (process.env.EXPO_PUBLIC_RORK_API_BASE_URL) {
     console.log('Using production API URL:', process.env.EXPO_PUBLIC_RORK_API_BASE_URL);
@@ -23,9 +30,9 @@ const getBaseUrl = () => {
     return devUrl;
   }
 
-  throw new Error(
-    "No base url found, please set EXPO_PUBLIC_RORK_API_BASE_URL"
-  );
+  // Final fallback
+  console.warn('No base URL configured, using localhost');
+  return 'http://localhost:3000';
 };
 
 export const trpcClient = trpc.createClient({

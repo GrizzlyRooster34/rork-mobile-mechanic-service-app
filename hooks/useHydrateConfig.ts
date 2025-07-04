@@ -25,7 +25,7 @@ export const useHydrateConfig = () => {
       
       // Apply each config setting to the store with proper typing
       data.forEach((item: ConfigItem) => {
-        const { key, value } = item;
+        const { key, value }: { key: string; value: any } = item;
         try {
           configStore.set(key as any, value);
           console.log(`Config updated: ${key} = ${value}`);

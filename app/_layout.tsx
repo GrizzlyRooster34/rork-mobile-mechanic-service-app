@@ -1,12 +1,10 @@
-import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Colors } from '@/constants/colors';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { trpc, trpcClient } from '@/lib/trpc';
-import { useHydrateConfig } from '@/hooks/useHydrateConfig';
 
 export const unstable_settings = {
   initialRouteName: 'auth',
@@ -24,35 +22,25 @@ const queryClient = new QueryClient({
 });
 
 function AppContent() {
-  const [loaded, error] = useFonts({});
-  
-  // Hydrate config store with backend settings on app startup
-  // Disable for now to prevent blocking app startup
-  // const { isHydrated, error: configError } = useHydrateConfig();
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    if (error) {
-      console.error('Font loading error:', error);
-      throw error;
+    async function prepare() {
+      try {
+        // Simulate any async loading if needed
+        await new Promise(resolve => setTimeout(resolve, 100));
+      } catch (e) {
+        console.warn('App preparation failed:', e);
+      } finally {
+        setIsReady(true);
+        SplashScreen.hideAsync();
+      }
     }
-  }, [error]);
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
+    prepare();
+  }, []);
 
-  // Commented out config hydration to prevent blocking
-  // useEffect(() => {
-  //   if (configError) {
-  //     console.warn('Config hydration failed, using defaults:', configError);
-  //   } else if (isHydrated) {
-  //     console.log('Config successfully hydrated from backend');
-  //   }
-  // }, [isHydrated, configError]);
-
-  if (!loaded) {
+  if (!isReady) {
     return null;
   }
 

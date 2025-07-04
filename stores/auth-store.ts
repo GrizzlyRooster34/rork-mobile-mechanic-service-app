@@ -24,7 +24,6 @@ const PRODUCTION_USERS = {
     role: 'admin' as const,
     phone: '(555) 987-6543',
     createdAt: new Date(),
-    isActive: true,
   },
   mechanic: {
     id: 'mechanic-cody',
@@ -34,7 +33,6 @@ const PRODUCTION_USERS = {
     role: 'mechanic' as const,
     phone: '(555) 987-6543',
     createdAt: new Date(),
-    isActive: true,
   }
 };
 
@@ -49,7 +47,6 @@ let registeredCustomers: User[] = [
     role: 'customer',
     phone: '(555) 123-4567',
     createdAt: new Date(),
-    isActive: true,
   }
 ];
 
@@ -82,11 +79,8 @@ export const useAuthStore = create<AuthStore>()(
               timestamp: new Date().toISOString() 
             });
             
-            // Ensure user object has all required properties
-            const completeUser: User = {
-              ...result.user,
-              isActive: result.user.isActive ?? true, // Default to true if not provided
-            };
+            // Use the user object as returned from the backend
+            const completeUser: User = result.user;
             
             // Auto-login after successful signup
             set({ 
@@ -147,54 +141,61 @@ export const useAuthStore = create<AuthStore>()(
             }
           }
           
-          // Use TRPC client for login
-          const result = await trpcClient.auth.signin.mutate({
-            email,
-            password,
-          });
-          
-          if (result.success && result.user) {
-            console.log('Login successful via TRPC:', { 
-              userId: result.user.id, 
-              role: result.user.role, 
-              timestamp: new Date().toISOString() 
+          // Try TRPC client for login, but fallback to dev mode if it fails
+          try {
+            const result = await trpcClient.auth.signin.mutate({
+              email,
+              password,
             });
             
-            // Ensure user object has all required properties
-            const completeUser: User = {
-              ...result.user,
-              isActive: result.user.isActive ?? true, // Default to true if not provided
-            };
+            if (result.success && result.user) {
+              console.log('Login successful via TRPC:', { 
+                userId: result.user.id, 
+                role: result.user.role, 
+                timestamp: new Date().toISOString() 
+              });
+              
+              // Use the user object as returned from the backend
+              const completeUser: User = result.user;
+              
+              set({ 
+                user: completeUser, 
+                isAuthenticated: true, 
+                isLoading: false 
+              });
+              
+              return true;
+            } else {
+              console.log('Login failed via TRPC:', result.error);
+            }
+          } catch (trpcError) {
+            console.warn('TRPC login failed, trying dev fallback:', trpcError);
             
-            set({ 
-              user: completeUser, 
-              isAuthenticated: true, 
-              isLoading: false 
-            });
-            
-            return true;
-          } else {
-            console.log('Login failed via TRPC:', result.error);
-            set({ isLoading: false });
-            return false;
-          }
-        } catch (error) {
-          console.error('Login error:', error);
-          
-          // Enhanced error logging for debugging
-          if (error instanceof Error) {
-            console.error('Login error details:', {
-              message: error.message,
-              stack: error.stack,
-              timestamp: new Date().toISOString()
-            });
-            
-            // Check if it's a JSON parse error (HTML response)
-            if (error.message.includes('JSON') || error.message.includes('HTML')) {
-              console.error('Possible tRPC server connection issue. Check if backend is running.');
+            // Fallback to dev credentials if TRPC fails
+            if (devMode && isDevCredentials(email, password)) {
+              const devUser = getDevUser(email);
+              if (devUser) {
+                console.log('Fallback dev login successful:', { 
+                  userId: devUser.id, 
+                  role: devUser.role, 
+                  timestamp: new Date().toISOString() 
+                });
+                
+                set({ 
+                  user: devUser, 
+                  isAuthenticated: true, 
+                  isLoading: false 
+                });
+                
+                return true;
+              }
             }
           }
           
+          set({ isLoading: false });
+          return false;
+        } catch (error) {
+          console.error('Login error:', error);
           set({ isLoading: false });
           return false;
         }

@@ -3,6 +3,8 @@
     "name": "Mobile Mechanic Service App",
     "slug": "mobile-mechanic-service-app",
     "version": "1.0.0",
+    "owner": "grizzlyrooster34",
+    "projectId": "ffc17970-a189-49d4-b3a3-1b164e8c591e",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -15,14 +17,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "app.rork.mobile-mechanic-service-app"
+      "bundleIdentifier": "app.rork.mobilemechanicservice"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "app.rork.mobile-mechanic-service-app"
+      "package": "app.rork.mobilemechanicservice"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

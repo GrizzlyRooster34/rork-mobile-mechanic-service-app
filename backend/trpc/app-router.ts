@@ -1,30 +1,27 @@
-import { createTRPCRouter } from './create-context';
+import { router } from './trpc';
 import { hiProcedure } from './routes/example/hi/route';
-import { diagnoseProcedure } from './routes/diagnosis/route';
 import { authRouter } from './routes/auth/route';
 import { adminRouter } from './routes/admin/route';
 import { quoteRouter } from './routes/quote/route';
 import { jobRouter } from './routes/job/route';
 import { configRouter } from './routes/config/route';
-import { decodeFromPlateProcedure, getSupportedStatesProcedure, validatePlateProcedure } from './routes/vin/route';
+import { vinRouter } from './routes/vin/route';
+import { diagnosisRouter } from './routes/diagnosis/route';
 
-export const appRouter = createTRPCRouter({
-  example: createTRPCRouter({
+export const appRouter = router({
+  // Example routes
+  example: router({
     hi: hiProcedure,
   }),
-  diagnosis: createTRPCRouter({
-    diagnose: diagnoseProcedure,
-  }),
-  vin: createTRPCRouter({
-    decodeFromPlate: decodeFromPlateProcedure,
-    getSupportedStates: getSupportedStatesProcedure,
-    validatePlate: validatePlateProcedure,
-  }),
+  
+  // Main app routes
   auth: authRouter,
   admin: adminRouter,
   quote: quoteRouter,
   job: jobRouter,
   config: configRouter,
+  vin: vinRouter,
+  diagnosis: diagnosisRouter,
 });
 
 export type AppRouter = typeof appRouter;

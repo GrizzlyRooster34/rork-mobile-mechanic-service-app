@@ -17,6 +17,7 @@ const queryClient = new QueryClient({
     queries: {
       retry: 1,
       retryDelay: 1000,
+      staleTime: 5 * 60 * 1000, // 5 minutes
     },
   },
 });
@@ -27,7 +28,7 @@ function AppContent() {
   useEffect(() => {
     async function prepare() {
       try {
-        // Simulate any async loading if needed
+        // Simple preparation without fonts to avoid infinite loops
         await new Promise(resolve => setTimeout(resolve, 100));
       } catch (e) {
         console.warn('App preparation failed:', e);

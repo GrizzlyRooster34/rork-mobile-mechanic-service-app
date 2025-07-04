@@ -24,7 +24,7 @@ const getBaseUrl = () => {
   if (__DEV__) {
     const devUrl = Platform.select({
       web: 'http://localhost:3000',
-      default: 'http://localhost:3000', // For Expo Go, this should work
+      default: 'http://localhost:3000',
     });
     console.log('Using development API URL:', devUrl);
     return devUrl;
@@ -40,23 +40,19 @@ export const trpcClient = trpc.createClient({
     httpLink({
       url: `${getBaseUrl()}/api/trpc`,
       transformer: superjson,
-      // Add headers for production
       headers: () => {
         const headers: Record<string, string> = {
           'Content-Type': 'application/json',
         };
 
-        // Add API key for production if available
         if (process.env.EXPO_PUBLIC_API_KEY) {
           headers['Authorization'] = `Bearer ${process.env.EXPO_PUBLIC_API_KEY}`;
         }
 
-        // Add environment header
         headers['X-Environment'] = __DEV__ ? 'development' : 'production';
 
         return headers;
       },
-      // Add error handling for non-JSON responses
       fetch: async (url, options) => {
         try {
           const response = await fetch(url, options);
@@ -70,12 +66,25 @@ export const trpcClient = trpc.createClient({
               statusText: response.statusText,
               contentType
             });
+            
+            // Return a mock response for development to prevent crashes
+            if (__DEV__) {
+              return new Response(JSON.stringify({ 
+                error: { 
+                  message: 'tRPC server not available - using dev fallback',
+                  code: 'INTERNAL_SERVER_ERROR' 
+                } 
+              }), {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' }
+              });
+            }
+            
             throw new Error(`Server returned HTML instead of JSON. Check if tRPC server is running at ${url}`);
           }
           
           return response;
         } catch (error: unknown) {
-          // Proper error handling with type checking
           if (error instanceof Error) {
             console.error('tRPC fetch error:', {
               url,
@@ -90,6 +99,20 @@ export const trpcClient = trpc.createClient({
               timestamp: new Date().toISOString()
             });
           }
+          
+          // In development, return a fallback response instead of crashing
+          if (__DEV__) {
+            return new Response(JSON.stringify({ 
+              error: { 
+                message: 'Network error - using dev fallback',
+                code: 'INTERNAL_SERVER_ERROR' 
+              } 
+            }), {
+              status: 500,
+              headers: { 'Content-Type': 'application/json' }
+            });
+          }
+          
           throw error;
         }
       },

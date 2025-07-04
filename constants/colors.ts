@@ -1,23 +1,35 @@
 export const Colors = {
-  primary: '#007AFF',
-  primaryDark: '#0056CC',
-  secondary: '#5856D6',
-  background: '#000000',
-  surface: '#1C1C1E',
-  card: '#2C2C2E',
-  border: '#3A3A3C',
+  // Primary brand colors - blue/cyan theme
+  primary: '#00BFFF',
+  primaryDark: '#0099CC',
+  secondary: '#1E90FF',
+  
+  // Background colors
+  background: '#0A0A0A',
+  surface: '#1A1A1A',
+  card: '#2A2A2A',
+  
+  // Border and divider colors
+  border: '#3A3A3A',
+  
+  // Text colors
   text: '#FFFFFF',
-  textSecondary: '#EBEBF5',
-  textMuted: '#8E8E93',
-  success: '#30D158',
-  successBackground: '#1E3A1E',
-  warning: '#FF9F0A',
-  error: '#FF453A',
-  errorBackground: '#3A1E1E',
-  info: '#64D2FF',
+  textSecondary: '#CCCCCC',
+  textMuted: '#888888',
+  
+  // Status colors
+  success: '#00C851',
+  successBackground: '#00C851',
+  warning: '#FFB347',
+  error: '#FF4444',
+  errorBackground: '#FF4444',
+  info: '#33B5E5',
+  
+  // Utility colors
   white: '#FFFFFF',
   black: '#000000',
-  gray: '#8E8E93',
-  lightGray: '#C7C7CC',
-  development: '#FF9F0A',
+  transparent: 'transparent',
+  
+  // Development colors
+  development: '#FFB347',
 };

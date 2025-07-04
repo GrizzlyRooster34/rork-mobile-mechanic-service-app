@@ -1,67 +1,43 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Button } from '@/components/Button';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Colors } from '@/constants/colors';
 import { useAuthStore } from '@/stores/auth-store';
-import { devMode, devCredentials } from '@/utils/dev';
-import * as Icons from 'lucide-react-native';
+import { ENV_CONFIG } from '@/utils/firebase-config';
 
 export default function AdminDualLoginToggle() {
   const { login, isLoading } = useAuthStore();
 
-  if (!devMode) {
+  // Only show in development
+  if (!ENV_CONFIG?.showQuickAccess) {
     return null;
   }
 
-  const handleDevLogin = async (role: 'admin' | 'mechanic') => {
-    const credentials = devCredentials[role];
-    const success = await login(credentials.email, credentials.password);
-    
-    if (success) {
-      console.log(`Dev ${role} login successful`);
-    } else {
-      console.error(`Dev ${role} login failed`);
-    }
+  const handleAdminLogin = async () => {
+    await login('matthew.heinen.2014@gmail.com', 'RoosTer669072!@');
+  };
+
+  const handleMechanicLogin = async () => {
+    await login('cody@heinicus.com', 'RoosTer669072!@');
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Icons.Code size={20} color={Colors.development} />
-        <Text style={styles.title}>Development Login</Text>
-        <View style={styles.devBadge}>
-          <Text style={styles.devBadgeText}>DEV</Text>
-        </View>
-      </View>
-
-      <Text style={styles.subtitle}>
-        Quick login for development and testing
-      </Text>
-
+      <Text style={styles.title}>Quick Dev Login</Text>
       <View style={styles.buttonContainer}>
-        <Button
-          title="Login as Admin"
-          onPress={() => handleDevLogin('admin')}
+        <TouchableOpacity
+          style={[styles.button, styles.adminButton]}
+          onPress={handleAdminLogin}
           disabled={isLoading}
-          style={[styles.loginButton, { backgroundColor: Colors.primary }]}
-        />
-
-        <Button
-          title="Login as Mechanic"
-          onPress={() => handleDevLogin('mechanic')}
+        >
+          <Text style={styles.buttonText}>Admin Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, styles.mechanicButton]}
+          onPress={handleMechanicLogin}
           disabled={isLoading}
-          style={[styles.loginButton, { backgroundColor: Colors.mechanic }]}
-        />
-      </View>
-
-      <View style={styles.credentials}>
-        <Text style={styles.credentialsTitle}>Dev Credentials:</Text>
-        <Text style={styles.credentialText}>
-          Admin: {devCredentials.admin.email}
-        </Text>
-        <Text style={styles.credentialText}>
-          Mechanic: {devCredentials.mechanic.email}
-        </Text>
+        >
+          <Text style={styles.buttonText}>Mechanic Login</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -69,77 +45,43 @@ export default function AdminDualLoginToggle() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.card,
-    borderRadius: 12,
-    padding: 20,
-    margin: 16,
-    borderWidth: 2,
-    borderColor: Colors.development,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-    gap: 8,
-  },
-  title: {
-    flex: 1,
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.text,
-  },
-  devBadge: {
-    backgroundColor: Colors.development,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  devBadgeText: {
-    fontSize: 10,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    marginBottom: 16,
-  },
-  buttonContainer: {
-    gap: 12,
-    marginBottom: 16,
-  },
-  loginButton: {
-    padding: 0,
-  },
-  buttonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-  buttonText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  credentials: {
-    backgroundColor: Colors.background,
-    padding: 12,
+    marginVertical: 16,
+    padding: 16,
+    backgroundColor: Colors.warning + '10',
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: Colors.border,
+    borderColor: Colors.warning + '30',
   },
-  credentialsTitle: {
+  title: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: Colors.warning,
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  button: {
+    flex: 1,
+    padding: 12,
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  adminButton: {
+    backgroundColor: Colors.error + '20',
+    borderWidth: 1,
+    borderColor: Colors.error,
+  },
+  mechanicButton: {
+    backgroundColor: Colors.primary + '20',
+    borderWidth: 1,
+    borderColor: Colors.primary,
+  },
+  buttonText: {
     fontSize: 12,
     fontWeight: '600',
-    color: Colors.textSecondary,
-    marginBottom: 4,
-  },
-  credentialText: {
-    fontSize: 11,
-    color: Colors.textMuted,
-    fontFamily: 'monospace',
+    color: Colors.text,
   },
 });

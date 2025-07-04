@@ -14,13 +14,21 @@ export const unstable_settings = {
 
 SplashScreen.preventAutoHideAsync();
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      retryDelay: 1000,
+    },
+  },
+});
 
 function AppContent() {
   const [loaded, error] = useFonts({});
   
   // Hydrate config store with backend settings on app startup
-  const { isHydrated, error: configError } = useHydrateConfig();
+  // Disable for now to prevent blocking app startup
+  // const { isHydrated, error: configError } = useHydrateConfig();
 
   useEffect(() => {
     if (error) {
@@ -35,13 +43,14 @@ function AppContent() {
     }
   }, [loaded]);
 
-  useEffect(() => {
-    if (configError) {
-      console.warn('Config hydration failed, using defaults:', configError);
-    } else if (isHydrated) {
-      console.log('Config successfully hydrated from backend');
-    }
-  }, [isHydrated, configError]);
+  // Commented out config hydration to prevent blocking
+  // useEffect(() => {
+  //   if (configError) {
+  //     console.warn('Config hydration failed, using defaults:', configError);
+  //   } else if (isHydrated) {
+  //     console.log('Config successfully hydrated from backend');
+  //   }
+  // }, [isHydrated, configError]);
 
   if (!loaded) {
     return null;

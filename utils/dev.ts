@@ -1,52 +1,67 @@
-// Development utilities and configuration
-export const devMode = process.env.NODE_ENV === 'development' || __DEV__;
+import { User } from '@/types/auth';
 
-export const hardcodedAdmin = {
-  email: "admin@heinicus.dev",
-  password: "HeinicusOverlord9000",
-  role: "admin" as const,
-  id: "admin-dev-id",
-  firstName: "Dev",
-  lastName: "Admin",
-  createdAt: new Date(),
-  isActive: true,
-};
+export const devMode = true; // Set to false for production
 
-export const hardcodedMechanic = {
-  email: "mechanic@heinicus.dev", 
-  password: "MechanicDev2024",
-  role: "mechanic" as const,
-  id: "mechanic-dev-id",
-  firstName: "Dev",
-  lastName: "Mechanic",
-  createdAt: new Date(),
-  isActive: true,
-};
-
-export const devCredentials = {
+export const DEV_CREDENTIALS = {
   admin: {
-    email: hardcodedAdmin.email,
-    password: hardcodedAdmin.password,
+    email: 'matthew.heinen.2014@gmail.com',
+    password: 'RoosTer669072!@',
   },
   mechanic: {
-    email: hardcodedMechanic.email,
-    password: hardcodedMechanic.password,
+    email: 'cody@heinicus.com',
+    password: 'RoosTer669072!@',
+  },
+  customer: {
+    email: 'customer@example.com',
+    password: 'password',
   },
 };
 
-export function isDevCredentials(email: string, password: string) {
-  return (
-    (email === hardcodedAdmin.email && password === hardcodedAdmin.password) ||
-    (email === hardcodedMechanic.email && password === hardcodedMechanic.password)
+export function isDevCredentials(email: string, password: string): boolean {
+  return Object.values(DEV_CREDENTIALS).some(
+    cred => cred.email === email && cred.password === password
   );
 }
 
-export function getDevUser(email: string) {
-  if (email === hardcodedAdmin.email) {
-    return hardcodedAdmin;
+export function getDevUser(email: string): User | null {
+  if (email === DEV_CREDENTIALS.admin.email) {
+    return {
+      id: 'admin-cody',
+      email: DEV_CREDENTIALS.admin.email,
+      firstName: 'Cody',
+      lastName: 'Owner',
+      role: 'admin',
+      phone: '(555) 987-6543',
+      createdAt: new Date(),
+      isActive: true,
+    };
   }
-  if (email === hardcodedMechanic.email) {
-    return hardcodedMechanic;
+  
+  if (email === DEV_CREDENTIALS.mechanic.email) {
+    return {
+      id: 'mechanic-cody',
+      email: DEV_CREDENTIALS.mechanic.email,
+      firstName: 'Cody',
+      lastName: 'Mechanic',
+      role: 'mechanic',
+      phone: '(555) 987-6543',
+      createdAt: new Date(),
+      isActive: true,
+    };
   }
+  
+  if (email === DEV_CREDENTIALS.customer.email) {
+    return {
+      id: 'customer-demo',
+      email: DEV_CREDENTIALS.customer.email,
+      firstName: 'Demo',
+      lastName: 'Customer',
+      role: 'customer',
+      phone: '(555) 123-4567',
+      createdAt: new Date(),
+      isActive: true,
+    };
+  }
+  
   return null;
 }

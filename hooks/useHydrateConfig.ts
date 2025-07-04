@@ -14,7 +14,10 @@ interface ConfigItem {
  */
 export const useHydrateConfig = () => {
   // Query config from backend
-  const { data, isSuccess, error } = trpc.config.getAll.useQuery();
+  const { data, isSuccess, error } = trpc.config.getAll.useQuery(undefined, {
+    retry: 1,
+    retryDelay: 1000,
+  });
 
   useEffect(() => {
     if (isSuccess && data) {

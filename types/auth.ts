@@ -6,7 +6,7 @@ export interface User {
   role: 'customer' | 'mechanic' | 'admin';
   phone?: string;
   createdAt: Date;
-  isActive: boolean;
+  isActive: boolean; // Add this field to fix TypeScript errors
 }
 
 export interface AuthState {
@@ -20,10 +20,9 @@ export interface LoginCredentials {
   password: string;
 }
 
-export interface SignupData {
-  email: string;
-  password: string;
+export interface SignupData extends LoginCredentials {
   firstName: string;
   lastName: string;
   phone?: string;
+  role?: 'customer' | 'mechanic';
 }

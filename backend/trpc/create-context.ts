@@ -2,7 +2,7 @@ import { initTRPC } from '@trpc/server';
 import superjson from 'superjson';
 
 // Create context for tRPC
-export const createTRPCContext = async (opts: { req?: any; res?: any }) => {
+export const createContext = async (opts: { req?: any; res?: any }) => {
   // Log request for monitoring in production
   if (opts.req && !process.env.NODE_ENV?.includes('development')) {
     console.log('tRPC request:', {
@@ -22,7 +22,7 @@ export const createTRPCContext = async (opts: { req?: any; res?: any }) => {
   };
 };
 
-export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
+export type Context = Awaited<ReturnType<typeof createContext>>;
 
 // Initialize tRPC
 const t = initTRPC.context<Context>().create({

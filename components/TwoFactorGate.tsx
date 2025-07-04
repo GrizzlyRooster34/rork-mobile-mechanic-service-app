@@ -1,106 +1,72 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Alert } from 'react-native';
-import { Button } from '@/components/Button';
+import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
 import { Colors } from '@/constants/colors';
-import * as Icons from 'lucide-react-native';
+import { Button } from '@/components/Button';
 
 interface TwoFactorGateProps {
   onVerified: () => void;
   onCancel: () => void;
-  userEmail: string;
 }
 
-export function TwoFactorGate({ onVerified, onCancel, userEmail }: TwoFactorGateProps) {
+export default function TwoFactorGate({ onVerified, onCancel }: TwoFactorGateProps) {
   const [code, setCode] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
 
   const handleVerify = async () => {
     if (code.length !== 6) {
-      Alert.alert('Invalid Code', 'Please enter a 6-digit verification code.');
+      Alert.alert('Error', 'Please enter a 6-digit code');
       return;
     }
 
     setIsVerifying(true);
-
-    try {
-      // Mock 2FA verification - in production this would verify with Google Authenticator
-      // For development, accept any 6-digit code
-      if (code === '123456' || code.length === 6) {
-        console.log('2FA verification successful for:', userEmail);
+    
+    // Mock verification - in production this would verify with TOTP
+    setTimeout(() => {
+      if (code === '123456') {
         onVerified();
       } else {
-        Alert.alert('Verification Failed', 'Invalid verification code. Please try again.');
+        Alert.alert('Error', 'Invalid verification code');
       }
-    } catch (error) {
-      console.error('2FA verification error:', error);
-      Alert.alert('Error', 'Verification failed. Please try again.');
-    } finally {
       setIsVerifying(false);
-    }
-  };
-
-  const handleResendCode = () => {
-    Alert.alert(
-      'Code Sent',
-      'A new verification code has been sent to your authenticator app.',
-      [{ text: 'OK' }]
-    );
+    }, 1000);
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Icons.Shield size={48} color={Colors.primary} />
+      <View style={styles.content}>
         <Text style={styles.title}>Two-Factor Authentication</Text>
         <Text style={styles.subtitle}>
           Enter the 6-digit code from your authenticator app
         </Text>
-      </View>
-
-      <View style={styles.form}>
-        <Text style={styles.label}>Verification Code</Text>
+        
         <TextInput
-          style={styles.codeInput}
+          style={styles.input}
           value={code}
           onChangeText={setCode}
           placeholder="000000"
           placeholderTextColor={Colors.textMuted}
-          keyboardType="numeric"
+          keyboardType="number-pad"
           maxLength={6}
           autoFocus
-          editable={!isVerifying}
         />
-
-        <View style={styles.actions}>
+        
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Cancel"
+            onPress={onCancel}
+            variant="outline"
+            style={styles.button}
+          />
           <Button
             title={isVerifying ? 'Verifying...' : 'Verify'}
             onPress={handleVerify}
-            disabled={code.length !== 6 || isVerifying}
-            style={styles.verifyButton}
-          />
-          
-          <Button
-            title="Resend Code"
-            variant="outline"
-            onPress={handleResendCode}
-            disabled={isVerifying}
-            style={styles.resendButton}
+            disabled={isVerifying || code.length !== 6}
+            style={styles.button}
           />
         </View>
-
-        <Button
-          title="Cancel"
-          variant="outline"
-          onPress={onCancel}
-          disabled={isVerifying}
-          style={styles.cancelButton}
-        />
-      </View>
-
-      <View style={styles.info}>
-        <Icons.Info size={16} color={Colors.textMuted} />
-        <Text style={styles.infoText}>
-          2FA is not fully implemented yet. For development, use any 6-digit code or "123456".
+        
+        <Text style={styles.note}>
+          Note: 2FA is not fully implemented yet. Use code "123456" for testing.
         </Text>
       </View>
     </View>
@@ -110,74 +76,55 @@ export function TwoFactorGate({ onVerified, onCancel, userEmail }: TwoFactorGate
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
-    padding: 20,
+    backgroundColor: Colors.background + 'CC',
     justifyContent: 'center',
-  },
-  header: {
     alignItems: 'center',
-    marginBottom: 32,
+    padding: 20,
+  },
+  content: {
+    backgroundColor: Colors.card,
+    padding: 24,
+    borderRadius: 12,
+    width: '100%',
+    maxWidth: 400,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '600',
     color: Colors.text,
-    marginTop: 16,
+    textAlign: 'center',
     marginBottom: 8,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: Colors.textSecondary,
     textAlign: 'center',
-    lineHeight: 22,
-  },
-  form: {
     marginBottom: 24,
   },
-  label: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.text,
-    marginBottom: 8,
-  },
-  codeInput: {
-    backgroundColor: Colors.card,
+  input: {
+    backgroundColor: Colors.surface,
     borderWidth: 1,
     borderColor: Colors.border,
     borderRadius: 8,
     padding: 16,
-    fontSize: 24,
     color: Colors.text,
+    fontSize: 18,
     textAlign: 'center',
-    fontFamily: 'monospace',
     letterSpacing: 4,
     marginBottom: 24,
   },
-  actions: {
-    gap: 12,
-    marginBottom: 16,
-  },
-  verifyButton: {
-    backgroundColor: Colors.primary,
-  },
-  resendButton: {
-    borderColor: Colors.textMuted,
-  },
-  cancelButton: {
-    borderColor: Colors.error,
-  },
-  info: {
+  buttonContainer: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 8,
-    backgroundColor: Colors.card,
-    padding: 16,
-    borderRadius: 8,
+    gap: 12,
   },
-  infoText: {
+  button: {
     flex: 1,
+  },
+  note: {
     fontSize: 12,
     color: Colors.textMuted,
-    lineHeight: 16,
+    textAlign: 'center',
+    marginTop: 16,
+    fontStyle: 'italic',
   },
 });

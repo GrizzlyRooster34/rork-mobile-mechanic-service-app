@@ -38,6 +38,15 @@ export const FIREBASE_CONFIG = {
   appId: "1:123456789:web:abcdef123456",
 };
 
+// Firebase collections
+export const COLLECTIONS = {
+  users: 'users',
+  serviceRequests: 'serviceRequests',
+  quotes: 'quotes',
+  vehicles: 'vehicles',
+  chatMessages: 'chatMessages',
+};
+
 // Validation functions
 export const validateEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
